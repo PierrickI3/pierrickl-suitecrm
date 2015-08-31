@@ -1,0 +1,20 @@
+{
+  "name": "PierrickL-suitecrm",
+  "version": "0.0.1",
+  "author": "Pierrick Lozach",
+  "summary": "Installs and configures SuiteCRM on Windows 8.1, 2012 or 2012R2",
+  "license": "Apache-2.0",
+  "source": "https://github.com/PierrickI3/pierrickl-suitecrm",
+  "project_page": "https://github.com/PierrickI3/pierrickl-suitecrm",
+  "issues_url": "https://github.com/PierrickI3/pierrickl-suitecrm/issues",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.4.0"},
+    {"name":"maestrodev/wget","version_requirement":">= 1.7.0"},
+    {"name":"puppetlabs/acl","version_requirement":">= 1.1.1"},
+  ],
+  "operatingsystem_support":[
+    {
+      "operatingsystem":"Windows"
+    }
+  ]
+}
