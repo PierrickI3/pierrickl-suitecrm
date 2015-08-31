@@ -10,7 +10,7 @@
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.4.0"},
     {"name":"maestrodev/wget","version_requirement":">= 1.7.0"},
-    {"name":"puppetlabs/acl","version_requirement":">= 1.1.1"},
+    {"name":"puppetlabs/acl","version_requirement":">= 1.1.1"}
   ],
   "operatingsystem_support":[
     {
