@@ -69,7 +69,7 @@ class suitecrm (
       file_line {'Add SQL Driver to php.ini':
         path    => "${phppath}/php.ini",
         line    => 'extension=php_sqlsrv_56_ts.dll',
-        require => Unzip['Unzip MSSQL Driver for PHP'],
+        require => Exec['Unzip MSSQL Driver for PHP'],
       }
 
       # Restart IIS
@@ -82,9 +82,10 @@ class suitecrm (
 
       # Download SuiteCRM
       pget {'Download SuiteCRM':
-        source  => 'https://suitecrm.com/component/dropfiles/?task=frontfile.download&id=35',
-        target  => $cache_dir,
-        require => Exec['Reset IIS'],
+        source         => 'https://suitecrm.com/component/dropfiles/?task=frontfile.download&id=35',
+        target         => $cache_dir,
+        targetfilename => 'SuiteCRM.zip',
+        require        => Exec['Reset IIS'],
       }
 
       # Uncompress it to c:\inetpub\wwwroot
@@ -93,6 +94,16 @@ class suitecrm (
         destination => 'C:/inetpub/wwwroot',
         creates     => "C:/inetpub/wwwroot/SuiteCRM-${suitecrmversion}/install.php",
         require     => Pget['Download SuiteCRM'],
+      }
+
+      # Delete SuiteCRM folder if it was previously installed
+      file {'Delete SuiteCRM folder':
+        ensure  => absent,
+        path    => "C:/inetpub/wwwroot/SuiteCRM-${suitecrmversion}",
+        recurse => true,
+        purge   => true,
+        force   => true,
+        require => Unzip['Unzip SuiteCRM'],
       }
 
       # Rename dir to sugarcrm
