@@ -1,4 +1,4 @@
-include wget
+include pget
 include unzip
 
 # == Class: suitecrm
@@ -51,9 +51,9 @@ class suitecrm (
     installed:
     {
       # Download Microsoft SQL Server Driver for PHP
-      wget::fetch {'Download MSSQL Driver for PHP':
-        source      => 'http://download.microsoft.com/download/C/D/B/CDB0A3BB-600E-42ED-8D5E-E4630C905371/SQLSRV32.EXE',
-        destination => "${phppath}/ext",
+      pget {'Download MSSQL Driver for PHP':
+        source => 'http://download.microsoft.com/download/C/D/B/CDB0A3BB-600E-42ED-8D5E-E4630C905371/SQLSRV32.EXE',
+        target => "${phppath}/ext",
       }
 
       # Unzip it (it's a self-extracting zip file)
@@ -61,7 +61,7 @@ class suitecrm (
         name        => "${phppath}/ext/SQLSRV32.EXE",
         destination => "${phppath}/ext",
         creates     => "${phppath}/ext/php_sqlsrv_56_ts.dll",
-        require     => Wget::Fetch['Download MSSQL Driver for PHP'],
+        require     => Pget['Download MSSQL Driver for PHP'],
       }
 
       # Modify php.ini. Use puppetlabs/ini instead?
@@ -80,10 +80,10 @@ class suitecrm (
       }
 
       # Download SuiteCRM
-      wget::fetch {'Download SuiteCRM':
-        source      => 'https://suitecrm.com/component/dropfiles/?task=frontfile.download&id=35',
-        destination => $cache_dir,
-        require     => Exec['Reset IIS'],
+      pget {'Download SuiteCRM':
+        source  => 'https://suitecrm.com/component/dropfiles/?task=frontfile.download&id=35',
+        target  => $cache_dir,
+        require => Exec['Reset IIS'],
       }
 
       # Uncompress it to c:\inetpub\wwwroot
@@ -91,7 +91,7 @@ class suitecrm (
         name        => "${cache_dir}/SuiteCRM-${suitecrmversion}.zip",
         destination => 'C:/inetpub/wwwroot',
         creates     => "C:/inetpub/wwwroot/SuiteCRM-${suitecrmversion}/install.php",
-        require     => Wget::Fetch['Download SuiteCRM'],
+        require     => Pget['Download SuiteCRM'],
       }
 
       # Rename dir to sugarcrm
@@ -127,6 +127,8 @@ class suitecrm (
       # Call runSilentInstall.php
       exec {'Call runSilentInstall':
         command  => 'cmd /c "Start http://localhost/sugarcrm/runSilentInstall.php"',
+        path     => $::path,
+        cwd      => $::system32,
         provider => windows,
         require  => [
           File['C:\\inetpub\\wwwroot\\sugarcrm\\config_si.php'],
