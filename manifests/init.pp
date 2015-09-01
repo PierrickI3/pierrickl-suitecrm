@@ -57,11 +57,12 @@ class suitecrm (
       }
 
       # Unzip it (it's a self-extracting zip file)
-      unzip {'Unzip MSSQL Driver for PHP':
-        name        => "${phppath}/ext/SQLSRV32.EXE",
-        destination => "${phppath}/ext",
-        creates     => "${phppath}/ext/php_sqlsrv_56_ts.dll",
-        require     => Pget['Download MSSQL Driver for PHP'],
+      exec {'Unzip MSSQL Driver for PHP':
+        name    => "cmd.exe /c \"${phppath}/ext/SQLSRV32.EXE /Q /T:\"${phppath}\\ext\" /C\"",
+        path    => $::path,
+        cwd     => $::system32,
+        creates => "${phppath}/ext/php_sqlsrv_56_ts.dll",
+        require => Pget['Download MSSQL Driver for PHP'],
       }
 
       # Modify php.ini. Use puppetlabs/ini instead?

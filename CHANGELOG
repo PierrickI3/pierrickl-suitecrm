@@ -1,3 +1,4 @@
 2015-08-31: Original commit
 2015-09-01: Added code to generate silent install script
 2015-09-01: Changed dependency on wget based on bug not fixed: https://github.com/maestrodev/puppet-wget/pull/54. Now using cyberious/pget.
+2015-09-01: Using SQLSRV32.exe command line parameters instead of using unzip to uncompress it

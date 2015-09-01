@@ -1,6 +1,6 @@
 {
   "name": "PierrickL-suitecrm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Pierrick Lozach",
   "summary": "Installs and configures SuiteCRM on Windows 8.1, 2012 or 2012R2",
   "license": "Apache-2.0",
