@@ -1,10 +1,10 @@
-# SuiteCRM Puppet Module
+# SCRM Puppet Module
 
-## Installs and configures SuiteCRM (beta test. Configuration is not happening yet.)
+## Installs and configures SuiteCRM or SugarCR< (beta test. Configuration is not happening yet.)
 
-[![Build Status](https://travis-ci.org/PierrickI3/pierrickl-suitecrm.svg?branch=master)](https://travis-ci.org/PierrickI3/pierrickl-suitecrm)
+[![Build Status](https://travis-ci.org/PierrickI3/pierrickl-scrm.svg?branch=master)](https://travis-ci.org/PierrickI3/pierrickl-scrm)
 
-[![Coverage Status](https://coveralls.io/repos/PierrickI3/pierrickl-suitecrm/badge.svg)](https://coveralls.io/r/PierrickI3/pierrickl-suitecrm)
+[![Coverage Status](https://coveralls.io/repos/PierrickI3/pierrickl-scrm/badge.svg)](https://coveralls.io/r/PierrickI3/pierrickl-scrm)
 
 #### Table of Contents
 
@@ -18,7 +18,7 @@
 
 ## Overview
 
-Installs and configures SuiteCRM silently.
+Installs and configures SuiteCRM or SugarCRM silently.
 
 ## Module Description
 
@@ -26,7 +26,7 @@ Installs and configures SuiteCRM silently.
 
 ### What install affects
 
-* Installs and configures SuiteCRM.
+* Installs and configures SuiteCRM or SugarCRM.
 
 ### Setup Requirements
 
@@ -40,6 +40,7 @@ Windows 8.1, 2012 or 2012R2
 class { 'suitecrm':
     ensure  => installed,
     phppath => 'C:/PHP',
+    crm     => 'sugarcrm',
 }
 ```
 
