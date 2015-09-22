@@ -18,7 +18,7 @@
 
 ## Overview
 
-Installs and configures SuiteCRM or SugarCRM silently.
+Installs and configures SuiteCRM or SugarCRM silently. Heavily customized for Interactive Intelligence demo environments.
 
 ## Module Description
 
