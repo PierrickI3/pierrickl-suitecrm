@@ -97,9 +97,10 @@ define scrm::unzip(
 # Copyright 2015, Interactive Intelligence Inc.
 #
 class scrm (
-  $ensure  = installed,
-  $phppath = 'C:/PHP',
-  $crm     = 'sugarcrm',
+  $ensure      = installed,
+  $phppath     = 'C:/PHP',
+  $crm         = 'sugarcrm',
+  $inintoolbar = installed,
 )
 {
 
@@ -296,6 +297,43 @@ class scrm (
         ],
       }
 
+      case $inintoolbar
+      {
+        installed:
+        {
+          # Git clone https://PierrickI3@bitbucket.org/laurentmillan/sugarcrm-toolbar.git in ${cache_dir}
+          exec {'Clone sugarcrm-toolbar':
+            command  => "git clone https://PierrickI3@bitbucket.org/laurentmillan/sugarcrm-toolbar.git ${cache_dir}\\inin-toolbar",
+            provider => powershell,
+            require  => Exec['Call runSilentInstall'],
+          }
+
+          # Backup old header.tpl
+          exec {'Backup old header.tpl':
+            command  => "Rename-Item \"C:\\inetpub\\wwwroot\\crm\\themes\\Sugar5\\tpls\\header.tpl\" header.old.tpl",
+            provider => powershell,
+            require  => Exec['Clone sugarcrm-toolbar'],
+          }
+
+          # Copy header.tpl in C:\inetpub\wwwroot\crm\themes\Sugar5\tpls
+          exec {'Copy new header.tpl':
+            command  => "Copy-Item \"${cache_dir}\\inin-toolbar\\header.tpl\" \"C:\\inetpub\\wwwroot\\crm\\themes\\Sugar5\\tpls\"",
+            provider => powershell,
+            require  => Exec['Backup old header.tpl'],
+          }
+
+          # Copy CIC folder in C:\inetpub\wwwroot\crm\themes\Sugar5\tpls
+          exec {'Copy CIC folder':
+            command  => "Copy-Item \"${cache_dir}\\inin-toolbar\\cic\" \"C:\\inetpub\\wwwroot\\crm\" -Recurse",
+            provider => powershell,
+            require  => Exec['Clone sugarcrm-toolbar'],
+          }
+        }
+        default:
+        {
+          fail("Unsupported inintoolbar \"${inintoolbar}\"")
+        }
+      }
     }
     default:
     {
