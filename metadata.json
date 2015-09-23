@@ -1,6 +1,6 @@
 {
   "name": "PierrickL-scrm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Pierrick Lozach",
   "summary": "Installs and configures SuiteCRM or SugarCRM on Windows 8.1, 2012 or 2012R2. Customized for Interactive Intelligence demo environments.",
   "license": "Apache-2.0",

@@ -304,6 +304,34 @@ class scrm (
         ],
       }
 
+      # Create script to add shortcut to SugarCRM on desktop
+      file {'Create script to add SugarCRM desktop shortcut':
+        ensure  => present,
+        path    => "${cache_dir}\\createsugarcrmshortcut.ps1",
+        content => "
+          function CreateShortcut(\$AppLocation, \$description){
+            \$WshShell = New-Object -ComObject WScript.Shell
+            \$Shortcut = \$WshShell.CreateShortcut(\"\$env:USERPROFILE\\Desktop\\\$description.url\")
+            \$Shortcut.TargetPath = \$AppLocation
+            #\$Shortcut.Description = \$description
+            \$Shortcut.Save()
+          }
+
+          CreateShortcut \"http://localhost/crm\" \"Sugar CRM\"
+          ",
+      }
+
+      # Add shortcut to SugarCRM on desktop
+      exec {'Add SugarCRM desktop shortcut':
+        command  => "${cache_dir}\\createsugarcrmshortcut.ps1",
+        provider => powershell,
+        timeout  => 1800,
+        require  => [
+          File['Create script to add SugarCRM desktop shortcut'],
+          Exec['Call runSilentInstall'],
+        ],
+      }
+
       case $inintoolbar
       {
         installed:
