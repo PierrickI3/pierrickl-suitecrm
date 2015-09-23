@@ -80,12 +80,19 @@ define scrm::unzip(
 # [phppath]
 #   Path to PHP files.
 #
+# [crm]
+#   suitecrm or sugarcrm. At this time, suitecrm is not implemented yet due to an issue with the zip file containing duplicates.
+#
+# [inintoolbar]
+#   installed or none.
+#
 # === Examples
 #
-#  class {'suitecrm':
-#   ensure  => installed,
-#   phppath => 'C:/PHP',
-#   crm     => 'sugarcrm',
+#  class {'scrm':
+#   ensure      => installed,
+#   phppath     => 'C:/PHP',
+#   crm         => 'sugarcrm',
+#   inintoolbar => installed,
 #  }
 #
 # === Authors
@@ -301,18 +308,17 @@ class scrm (
       {
         installed:
         {
-          # Git clone https://PierrickI3@bitbucket.org/laurentmillan/sugarcrm-toolbar.git in ${cache_dir}
-          exec {'Clone sugarcrm-toolbar':
-            command  => "git clone https://PierrickI3@bitbucket.org/laurentmillan/sugarcrm-toolbar.git ${cache_dir}\\inin-toolbar",
-            provider => powershell,
-            require  => Exec['Call runSilentInstall'],
+          vcsrepo {"${cache_dir}/inin-toolbar":
+            ensure   => present,
+            provider => 'git',
+            source   => 'https://PierrickI3@bitbucket.org/laurentmillan/sugarcrm-toolbar.git',
           }
 
           # Backup old header.tpl
           exec {'Backup old header.tpl':
             command  => "Rename-Item \"C:\\inetpub\\wwwroot\\crm\\themes\\Sugar5\\tpls\\header.tpl\" header.old.tpl",
             provider => powershell,
-            require  => Exec['Clone sugarcrm-toolbar'],
+            require  => Vcsrepo["${cache_dir}/inin-toolbar"],
           }
 
           # Copy header.tpl in C:\inetpub\wwwroot\crm\themes\Sugar5\tpls
@@ -326,8 +332,12 @@ class scrm (
           exec {'Copy CIC folder':
             command  => "Copy-Item \"${cache_dir}\\inin-toolbar\\cic\" \"C:\\inetpub\\wwwroot\\crm\" -Recurse",
             provider => powershell,
-            require  => Exec['Clone sugarcrm-toolbar'],
+            require  => Vcsrepo["${cache_dir}/inin-toolbar"],
           }
+        }
+        none:
+        {
+          debug('ININ Toolbar will not be installed')
         }
         default:
         {

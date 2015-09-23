@@ -37,10 +37,11 @@ Windows 8.1, 2012 or 2012R2
 ## Usage
 
 ```puppet
-class { 'suitecrm':
-    ensure  => installed,
-    phppath => 'C:/PHP',
-    crm     => 'sugarcrm',
+class { 'scrm':
+    ensure      => installed,
+    phppath     => 'C:/PHP',
+    crm         => 'sugarcrm',
+    inintoolbar => none,
 }
 ```
 

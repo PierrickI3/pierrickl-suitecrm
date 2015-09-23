@@ -1,5 +1,6 @@
 class {'scrm':
-  ensure  => installed,
-  phppath => 'C:/PHP',
-  crm     => 'sugarcrm',
+  ensure      => installed,
+  phppath     => 'C:/PHP',
+  crm         => 'sugarcrm',
+  inintoolbar => installed,
 }
