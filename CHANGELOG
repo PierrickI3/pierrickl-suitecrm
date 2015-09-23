@@ -1,3 +1,4 @@
 2015-09-21: Original commit
 2015-09-22: Added custom ININ toolbar as an options
 2015-09-23: Fixed git clone for inin toolbar
+2015-09-23: Fixed dependencies

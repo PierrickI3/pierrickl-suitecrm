@@ -318,21 +318,26 @@ class scrm (
           exec {'Backup old header.tpl':
             command  => "Rename-Item \"C:\\inetpub\\wwwroot\\crm\\themes\\Sugar5\\tpls\\header.tpl\" header.old.tpl",
             provider => powershell,
-            require  => Vcsrepo["${cache_dir}/inin-toolbar"],
+            require  => [
+              Exec['Call runSilentInstall'],
+            ],
           }
 
           # Copy header.tpl in C:\inetpub\wwwroot\crm\themes\Sugar5\tpls
           exec {'Copy new header.tpl':
             command  => "Copy-Item \"${cache_dir}\\inin-toolbar\\header.tpl\" \"C:\\inetpub\\wwwroot\\crm\\themes\\Sugar5\\tpls\"",
             provider => powershell,
-            require  => Exec['Backup old header.tpl'],
+            require  => [
+              Vcsrepo["${cache_dir}/inin-toolbar"],
+              Exec['Backup old header.tpl'],
+            ],
           }
 
           # Copy CIC folder in C:\inetpub\wwwroot\crm\themes\Sugar5\tpls
           exec {'Copy CIC folder':
             command  => "Copy-Item \"${cache_dir}\\inin-toolbar\\cic\" \"C:\\inetpub\\wwwroot\\crm\" -Recurse",
             provider => powershell,
-            require  => Vcsrepo["${cache_dir}/inin-toolbar"],
+            require  => Exec['Copy new header.tpl'],
           }
         }
         none:
